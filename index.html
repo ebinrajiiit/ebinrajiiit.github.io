@@ -314,4 +314,30 @@ setTimeout(()=>revealEls.forEach(el=>el.classList.add('visible')),1500);
 function switchTab(t,b){document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById('tab-'+t).classList.add('active');}
 function copyBib(btn){const ti=btn.closest('.paper-body').querySelector('.paper-title').textContent.trim();const b='@article{raj,\n  author={Raj, Ebin Deni},\n  title={'+ti+'},\n  year={2024}\n}';navigator.clipboard.writeText(b).then(()=>{btn.classList.add('btn-copied');btn.textContent='\u2713 Copied!';const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>{btn.classList.remove('btn-copied');btn.innerHTML='&#10077; Cite';t.classList.remove('show');},2500);});}
 function ac(el,target,sfx,fl){let s=0;const inc=target/112;const t=setInterval(()=>{s=Math.min(s+inc,target);el.textContent=(fl?s.toFixed(1):Math.floor(s))+sfx;if(s>=target)clearInterval(t);},16);}
-const mo=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){ac(document.getElementById('m-pub'),53,'+',false);ac
+const mo=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){
+  ac(document.getElementById('m-pub'),53,'+',false);
+  ac(document.getElementById('m-h'),14,'',false);
+  ac(document.getElementById('m-i'),42,'',false);
+  ac(document.getElementById('m-cit'),1200,'+',false);
+  ac(document.getElementById('m-if'),98.5,'',true);
+  ac(document.getElementById('m-bp'),7,'+',false);
+  ac(document.getElementById('m-proj'),12,'+',false);
+  ac(document.getElementById('m-talks'),46,'+',false);
+  mo.unobserve(x.target);
+}}),{threshold:0.1});
+const metricsStrip=document.querySelector('.metrics-strip');
+if(metricsStrip)mo.observe(metricsStrip);
+// Fallback: run counters after 2s if observer doesn't fire
+setTimeout(()=>{
+  if(document.getElementById('m-pub').textContent==='0'){
+    ac(document.getElementById('m-pub'),53,'+',false);
+    ac(document.getElementById('m-h'),14,'',false);
+    ac(document.getElementById('m-i'),42,'',false);
+    ac(document.getElementById('m-cit'),1200,'+',false);
+    ac(document.getElementById('m-if'),98.5,'',true);
+    ac(document.getElementById('m-bp'),7,'+',false);
+    ac(document.getElementById('m-proj'),12,'+',false);
+    ac(document.getElementById('m-talks'),46,'+',false);
+  }
+},2000);
+</script></body></html>
