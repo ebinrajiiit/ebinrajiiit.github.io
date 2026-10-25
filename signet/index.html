@@ -3,24 +3,62 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Privacy-preserving PDF editor from FACTS-H Lab, IIIT Kottayam. Your files never leave your computer."
-    />
-    <!-- Privacy invariant 5 (CLAUDE.md §1). Must stay byte-identical to the CSP
-         in docs/PRIVACY.md — apps/web/src/csp.test.ts fails if it drifts. -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; connect-src 'self'; script-src 'self' 'wasm-unsafe-eval'; img-src 'self' blob: data:; worker-src 'self' blob:"
-    />
-    <title>Signet — FACTS-H Lab</title>
-    <link rel="icon" href="/signet/brand/icon-192.png" sizes="192x192" />
-    <link rel="apple-touch-icon" href="/signet/brand/icon-192.png" />
-    <!-- Linked, not imported: Vite would inject imported CSS as an inline <style>. -->
-    <link rel="stylesheet" href="/signet/app.css" />
-    <script type="module" crossorigin src="/signet/assets/index-xfpL1azQ.js"></script>
-  <link rel="manifest" href="/signet/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/signet/registerSW.js"></script></head>
+    <title>Signet has moved</title>
+    <link rel="canonical" href="https://ebinrajiiit.github.io/pdf_suite/" />
+    <meta http-equiv="refresh" content="1; url=https://ebinrajiiit.github.io/pdf_suite/" />
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+        color: #1b1d21;
+        background: #f4f5f7;
+      }
+      @media (prefers-color-scheme: dark) {
+        body { color: #e8eaed; background: #15171b; }
+        a { color: #7aa7ff; }
+      }
+      main { max-width: 26rem; padding: 2rem; text-align: center; }
+      h1 { font-size: 1.15rem; margin: 0 0 0.5rem; }
+      p { margin: 0 0 0.75rem; }
+      small { opacity: 0.7; }
+    </style>
+  </head>
   <body>
-    <div id="root"></div>
+    <main>
+      <h1>Signet has moved</h1>
+      <p>
+        The try-it-out copy now lives at
+        <a href="https://ebinrajiiit.github.io/pdf_suite/">ebinrajiiit.github.io/pdf_suite/</a>,
+        where it updates with every build.
+      </p>
+      <p><small>Taking you there now.</small></p>
+    </main>
+    <script>
+      // Anyone who opened the old copy has a service worker registered at this
+      // scope. Left alone it would keep serving the build it cached and this
+      // page would never be seen, so it is removed before leaving — along with
+      // only the caches belonging to this path, since the new copy shares the
+      // origin and its caches are not ours to delete.
+      (async () => {
+        try {
+          const regs = (await navigator.serviceWorker?.getRegistrations?.()) ?? [];
+          await Promise.all(
+            regs.filter((r) => r.scope.includes("/signet/")).map((r) => r.unregister()),
+          );
+          if (window.caches) {
+            const keys = await caches.keys();
+            await Promise.all(
+              keys.filter((k) => k.includes("/signet/")).map((k) => caches.delete(k)),
+            );
+          }
+        } catch {
+          // Storage can be unavailable; the redirect below still happens.
+        }
+        location.replace("https://ebinrajiiit.github.io/pdf_suite/");
+      })();
+    </script>
   </body>
 </html>
